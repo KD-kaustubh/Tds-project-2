@@ -56,5 +56,3 @@ Once the analysis is complete, you can:
    - Download the statistical summary as a text or CSV file.
    - Download the generated visualizations as PNG files.
    - Export the generated narrative report.
-
----
