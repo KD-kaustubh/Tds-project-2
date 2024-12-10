@@ -1,4 +1,4 @@
-# tds-project2
+# TDS-project2
 
 ## Automated Data Analysis Tool  
 
