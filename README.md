@@ -23,7 +23,4 @@ The tool has been applied to the following datasets:
 
 - *Narrative Generation:* Uses OpenAI’s API to produce detailed, human-readable narratives based on the analysis results.
 
-### **Repository Structure**  
-The repository is organized into the following structure:  
-
 ```
