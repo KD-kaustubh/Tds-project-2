@@ -1,25 +1,40 @@
-# TDS-project2
+# Automated Data Analysis Report
+## Summary Statistics
 
-## Automated Data Analysis Tool  
+|           | overall     | quality    | repeatability |
+|-----------|-------------|------------|---------------|
+| count     | 2652.000000 | 2652.000000| 2652.000000   |
+| mean      | 3.047511    | 3.209276   | 1.494721      |
+| std       | 0.762180    | 0.796743   | 0.598289      |
+| min       | 1.000000    | 1.000000   | 1.000000      |
+| 25%       | 3.000000    | 3.000000   | 1.000000      |
+| 50%       | 3.000000    | 3.000000   | 1.000000      |
+| 75%       | 3.000000    | 4.000000   | 2.000000      |
+| max       | 5.000000    | 5.000000   | 3.000000      |
 
-### **Overview**  
-*Automated Analysis* is an advanced data analysis tool designed to automatically process datasets, generate insights, and visualize results with minimal user input. This tool handles diverse datasets and produces comprehensive reports that include statistical summaries, correlation analysis, and visualizations. It leverages Python and integrates OpenAI's models to create narrative insights based on the analysis outcomes.
+## Missing Values
+date              99
+language           0
+type               0
+title              0
+by               262
+overall            0
+quality            0
+repeatability      0
+dtype: int64
 
-### **Datasets Analyzed**  
-The tool has been applied to the following datasets:  
+## Outliers Detection
+overall          1216
+quality            24
+repeatability       0
+dtype: int64
 
-- *Goodreads Dataset:* Analysis of books, ratings, authors, and genres.  
+## Correlation Matrix
+Below is the correlation matrix of numerical features:
 
-- *Media Dataset:* Examination of media views, ratings, and genres.  
+![Correlation Matrix](correlation_matrix.png)
 
-- *Happiness Dataset:* Evaluation of happiness scores, income, education, and social support by country.
+## Outliers Visualization
+Below is the outliers detection chart:
 
-### **Key Features**  
-- *Automated Data Loading:* Upload a dataset, and the system automatically loads and analyzes it.  
-
-- *Summary Statistics:* Provides detailed statistical summaries for both numerical and categorical data.  
-
-- *Data Visualizations:* Generates insightful visualizations such as correlation heatmaps and distribution plots, which are saved as PNG files.  
-
-- *Narrative Generation:* Uses OpenAI’s API to produce detailed, human-readable narratives based on the analysis results.
-
+![Outliers](outliers.png)
