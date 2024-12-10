@@ -1,7 +1,7 @@
 # Automated Data Analysis Report
 
 ## Summary Statistics
-           | Statistic | Overall | Quality | Repeatability |
+| Statistic | Overall | Quality | Repeatability |
 |-----------|---------|---------|---------------|
 | Count     | 2652.00 | 2652.00 | 2652.00       |
 | Mean      | 3.05    | 3.21    | 1.49          |
@@ -11,6 +11,7 @@
 | 50%       | 3.00    | 3.00    | 1.00          |
 | 75%       | 3.00    | 4.00    | 2.00          |
 | Max       | 5.00    | 5.00    | 3.00          |
+
 
 ## Missing Values
 | Category       | Missing Values |
