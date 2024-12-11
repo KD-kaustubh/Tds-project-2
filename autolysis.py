@@ -1,3 +1,18 @@
+
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "pandas",
+#   "seaborn",
+#   "matplotlib",
+#   "numpy",
+#   "scipy",
+#   "openai",
+#   "scikit-learn",
+#   "ipykernel",  # Added ipykernel
+# ]
+# ///
+
 import os
 import pandas as pd
 import numpy as np
@@ -174,7 +189,7 @@ def question_llm(prompt, context):
     print("Generating story using LLM...")  # Debugging line
     try:
         # Set OpenAI API key
-        openai.api_key = os.getenv("AIPROXY_TOKEN")
+        openai.api_key = os.environ("AIPROXY_TOKEN")
 
         # Set the custom API base URL for AI Proxy (ensure there's no trailing slash)
         openai.api_base = "https://aiproxy.sanand.workers.dev/openai/v1"  # Corrected endpoint
@@ -220,12 +235,10 @@ def question_llm(prompt, context):
 
 
 # Main function that integrates all the steps
-def main(csv_file, api_token):
+def main(csv_file):
     print("Starting the analysis...")  # Debugging line
 
-    # Set the API token as an environment variable
-    os.environ["AIPROXY_TOKEN"] = api_token
-    print("API Token Set.")  # Debugging line
+
 
     # Try reading the CSV file with 'ISO-8859-1' encoding to handle special characters
     try:
@@ -278,10 +291,8 @@ def main(csv_file, api_token):
 
 if __name__ == "__main__":
     # Command-line argument parsing
-    parser = argparse.ArgumentParser(description="Automated Data Analysis")
-    parser.add_argument("csv_file", help="CSV file for analysis")
-    parser.add_argument("api_token", help="API token for authentication")  # Added API token argument
-    args = parser.parse_args()
-
-    # Run the main function with the provided CSV file and API token
-    main(args.csv_file, args.api_token)
+    import sys
+    if len(sys.argv) < 2:
+        print("Usage: uv run autolysis.py <dataset_path>")
+        sys.exit(1)
+    main(sys.argv[1])
