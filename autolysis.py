@@ -1,4 +1,3 @@
-
 # /// script
 # requires-python = ">=3.9"
 # dependencies = [
@@ -9,6 +8,7 @@
 #   "scipy",
 #   "openai",
 #   "scikit-learn",
+#   "requests",
 #   "ipykernel",  # Added ipykernel
 # ]
 # ///
@@ -19,6 +19,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import argparse
+import requests
+import json
 import openai  # Make sure you install this library: pip install openai
 
 # Function to analyze the data (basic summary stats, missing values, correlation matrix)
@@ -188,13 +190,13 @@ def create_readme(summary_stats, missing_values, corr_matrix, outliers, output_d
 def question_llm(prompt, context):
     print("Generating story using LLM...")  # Debugging line
     try:
-        # Set OpenAI API key
-        openai.api_key = os.environ("AIPROXY_TOKEN")
+        # Get the AIPROXY_TOKEN from the environment variable
+        token = os.environ["AIPROXY_TOKEN"]
 
-        # Set the custom API base URL for AI Proxy (ensure there's no trailing slash)
-        openai.api_base = "https://aiproxy.sanand.workers.dev/openai/v1"  # Corrected endpoint
+        # Set the custom API base URL for the proxy
+        api_url = "https://aiproxy.sanand.workers.dev/openai/v1/chat/completions"
 
-        # Enhance the prompt to ask for a more detailed story with paragraphs and necessary structure
+        # Construct the full prompt
         full_prompt = f"""
         Based on the following data analysis, please generate a creative and engaging story. The story should include multiple paragraphs, a clear structure with an introduction, body, and conclusion, and should feel like a well-rounded narrative.
 
@@ -212,34 +214,48 @@ def question_llm(prompt, context):
         - Format the story with clear paragraphs and structure.
         """
 
-        # Request to AI Proxy's chat completions endpoint for gpt-4o-mini model
-        response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",  # Using GPT-4o-Mini model
-            messages=[ 
+        # Prepare headers
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}"
+        }
+
+        # Prepare the body with the model and prompt
+        data = {
+            "model": "gpt-4o-mini",  # Specific model for proxy
+            "messages": [
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": full_prompt}
             ],
-            max_tokens=1000,  # Increased max_tokens for longer output
-            temperature=0.7,
-        )
+            "max_tokens": 1000,
+            "temperature": 0.7
+        }
 
-        # Extract the generated text from the response
-        story = response['choices'][0]['message']['content'].strip()
+        # Send the POST request to the proxy
+        response = requests.post(api_url, headers=headers, data=json.dumps(data))
 
-        print("Story generated.")  # Debugging line
-        return story
+        # Check for successful response
+        if response.status_code == 200:
+            # Extract the story from the response
+            story = response.json()['choices'][0]['message']['content'].strip()
+            print("Story generated.")  # Debugging line
+            return story
+        else:
+            print(f"Error with request: {response.status_code} - {response.text}")
+            return "Failed to generate story."
 
     except Exception as e:
-        print(f"Error with OpenAI API: {e}")
+        print(f"Error: {e}")
         return "Failed to generate story."
+
 
 
 # Main function that integrates all the steps
 def main(csv_file):
     print("Starting the analysis...")  # Debugging line
 
-
-
+    # Set the API token as an environment variable
+  
     # Try reading the CSV file with 'ISO-8859-1' encoding to handle special characters
     try:
         df = pd.read_csv(csv_file, encoding='ISO-8859-1')
@@ -290,7 +306,6 @@ def main(csv_file):
         print("Error generating the README.md file.")
 
 if __name__ == "__main__":
-    # Command-line argument parsing
     import sys
     if len(sys.argv) < 2:
         print("Usage: uv run autolysis.py <dataset_path>")
